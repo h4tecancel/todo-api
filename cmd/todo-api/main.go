@@ -1,7 +1,13 @@
 package main
 
 import (
+	"context"
 	"log"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+
 	"todo-api/internal/config"
 	"todo-api/internal/lib/logger"
 	"todo-api/internal/server"
@@ -11,19 +17,29 @@ import (
 
 func main() {
 	logger := logger.Init()
-	logger.Info("Server started!")
 	cfg := config.MustLoad()
 	storage, err := sqlite.New(cfg.StoragePath)
 	if err != nil {
 		log.Fatal(err)
 	}
+	srv := server.New(handlers.New(logger, storage))
 
-	//handlersContext, handlerCancel := context.WithTimeout(context.Background(), cfg.HTTPServer.Timeout)
-	server := server.New(handlers.New(logger, storage))
-	//defer handlerCancel()
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
 
-	if err := server.Start(cfg.HTTPServer.Address, cfg.HTTPServer.IdleTimeout, cfg.HTTPServer.Timeout); err != nil {
+	go func() {
+		if err := srv.Start(cfg.HTTPServer.Address, cfg.HTTPServer.IdleTimeout, cfg.HTTPServer.Timeout); err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	<-stop
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	if err := srv.Stop(ctx); err != nil {
 		log.Fatal(err)
 	}
-
 }
+
