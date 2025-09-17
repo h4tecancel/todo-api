@@ -31,9 +31,9 @@ func (s *Server) Start(address string, cfgIdleTimeout time.Duration, cfgTimeout 
 	srv := &http.Server{
 		Addr:         address,
 		Handler:      router,
-		IdleTimeout:  cfgIdleTimeout, // чистим висячие соединения
-		ReadTimeout:  cfgTimeout,     // ограничение на чтение запроса
-		WriteTimeout: cfgTimeout,     // ограничение на запись ответа
+		IdleTimeout:  cfgIdleTimeout, 
+		ReadTimeout:  cfgTimeout,     
+		WriteTimeout: cfgTimeout,     
 	}
 
 	if err := srv.ListenAndServe(); err != nil {
