@@ -20,6 +20,6 @@ MVP **ToDo REST API сервис** на **Go** с использованием *
 - [SQLite](https://www.sqlite.org/) — встроенная база данных  
 - [Slog](https://pkg.go.dev/log/slog) — логирование + собственная обертка
 - [Cleanenv](https://github.com/ilyakaznacheev/cleanenv) — взятие конфига 
-- ([Mux](https://github.com/gorilla/mux)) - роутер
+- [Mux](https://github.com/gorilla/mux) - роутер
 
 ---
