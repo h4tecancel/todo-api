@@ -13,12 +13,12 @@ func WriteJSONError(w http.ResponseWriter, log *slog.Logger, op string, code int
 		Time:    time.Now(),
 	}
 
-	// Пишем JSON-ответ клиенту
+	
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
 	_ = json.NewEncoder(w).Encode(errDTO)
 
-	// Логируем в slog
+
 	args := []any{
 		slog.String("op", op),
 		slog.Int("status", code),
