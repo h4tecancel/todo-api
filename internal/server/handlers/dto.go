@@ -12,7 +12,7 @@ type TaskResponse struct {
 	Execution string
 }
 
-// data transfer objext
+
 type CompleteTaskDTO struct {
 	ID       int64 `json:"id"`
 	Complete bool  `json:"complete"`
