@@ -38,10 +38,6 @@ func New(log *slog.Logger, db *sqlite.Storage) *Handlers {
 	}
 }
 
-// handlers/response.go
-// handlers/task.go
-
-// OK
 func (h *Handlers) AddNewTask(w http.ResponseWriter, r *http.Request) {
 	const op = "handlers.add_new_task"
 
@@ -57,7 +53,7 @@ func (h *Handlers) AddNewTask(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := task.ValidateForCreate(); err != nil {
-		// специфичное сообщение лучше отдать инлайном
+
 		WriteJSONError(w, h.Logger, op, http.StatusBadRequest, "field validation failed", err)
 		return
 	}
@@ -83,7 +79,6 @@ func (h *Handlers) AddNewTask(w http.ResponseWriter, r *http.Request) {
 	)
 }
 
-// OK
 func (h *Handlers) GetTaskByID(w http.ResponseWriter, r *http.Request) {
 	const op = "handlers.get_task_by_id"
 
@@ -110,7 +105,6 @@ func (h *Handlers) GetTaskByID(w http.ResponseWriter, r *http.Request) {
 	)
 }
 
-// OK
 func (h *Handlers) CompleteTask(w http.ResponseWriter, r *http.Request) {
 	const op = "handlers.complete_task"
 
@@ -135,7 +129,6 @@ func (h *Handlers) CompleteTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// получаем имя для ответа (спецслучай — инлайн-сообщение)
 	task, err := h.DB.GetTaskByID(ctx, req.ID)
 	if err != nil {
 		WriteJSONError(w, h.Logger, op, http.StatusInternalServerError, "failed to load task before update", err)
@@ -160,7 +153,7 @@ func (h *Handlers) CompleteTask(w http.ResponseWriter, r *http.Request) {
 	)
 }
 
-// OK
+
 func (h *Handlers) GetTasks(w http.ResponseWriter, r *http.Request) {
 	const op = "handlers.get_tasks"
 
@@ -197,7 +190,7 @@ func (h *Handlers) GetTasks(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// OK
+
 func (h *Handlers) DeleteTask(w http.ResponseWriter, r *http.Request) {
 	const op = "handlers.delete_task"
 
